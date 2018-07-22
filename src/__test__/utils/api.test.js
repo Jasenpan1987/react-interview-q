@@ -6,6 +6,10 @@ describe("test Api", () => {
     window.localStorage = new LocalStorageMock();
   });
 
+  afterEach(() => {
+    window.localStorage.removeItem("userlist");
+  });
+
   it("should be able to get all users", async () => {
     const fakeUserList = {
       "1": {
