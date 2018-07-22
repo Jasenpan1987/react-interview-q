@@ -4,9 +4,9 @@ import {
   GET_USERS_FAILED
 } from "../actions/userListActions";
 
-const defaultState = {
+export const defaultState = {
   users: {},
-  pending: false,
+  isLoading: false,
   error: null
 };
 
@@ -15,7 +15,7 @@ export const userListReducer = (state = defaultState, action) => {
     case GET_USERS_PENDING: {
       return {
         ...state,
-        pending: true,
+        isLoading: true,
         error: null
       };
     }
@@ -26,7 +26,7 @@ export const userListReducer = (state = defaultState, action) => {
         users: {
           ...action.payload
         },
-        pending: false,
+        isLoading: false,
         error: null
       };
     }
@@ -34,7 +34,7 @@ export const userListReducer = (state = defaultState, action) => {
     case GET_USERS_FAILED: {
       return {
         ...state,
-        pending: false,
+        isLoading: false,
         error: action.error
       };
     }

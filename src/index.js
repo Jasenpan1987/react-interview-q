@@ -1,17 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
 import "./index.css";
 import App from "./components/App";
 import { getUsers } from "./actions/userListActions";
 
-import { store } from "./store";
-
-store.dispatch(getUsers());
+import { RootApp, store } from "./rootApp";
 
 ReactDOM.render(
-  <Provider store={store}>
+  <RootApp>
     <App />
-  </Provider>,
+  </RootApp>,
   document.getElementById("root")
 );
+store.dispatch(getUsers());

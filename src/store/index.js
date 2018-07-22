@@ -10,10 +10,7 @@ const createStoreWithMiddleware = compose(
   devToolsExtension ? devToolsExtension() : next => next
 )(createStore);
 
-const store = createStoreWithMiddleware(rootReducer);
+const buildStore = (initState = {}) =>
+  createStoreWithMiddleware(rootReducer, initState);
 
-if (process.env.NODE_ENV !== "production") {
-  window.store = store;
-}
-
-export { store };
+export { buildStore };
