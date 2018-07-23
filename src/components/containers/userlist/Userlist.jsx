@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { setCurrentUser } from "../../../actions/userFormActions";
 
 class UserlistComponent extends Component {
+  handleEditButtonClick = userId => {
+    this.props.setCurrentUser(userId);
+  };
+
   renderUser = ({ id, firstName, lastName, phoneNumber }) => {
     return (
       <tr key={id}>
@@ -10,7 +15,12 @@ class UserlistComponent extends Component {
         <td>{lastName}</td>
         <td>{phoneNumber}</td>
         <td>
-          <button className="btn btn-danger btn-sm">Edit</button>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={this.handleEditButtonClick.bind(this, id)}
+          >
+            Edit
+          </button>
         </td>
       </tr>
     );
@@ -30,7 +40,10 @@ class UserlistComponent extends Component {
     const {
       userlist: { users, isLoading, error }
     } = this.props;
-    // console.log("props", this.props);
+
+    if (isLoading) {
+      return <h3>Loading...</h3>;
+    }
     return (
       <table className="table">
         <thead>{this.renderHead()}</thead>
@@ -55,6 +68,13 @@ const mapStateToProps = state => ({
   userlist: state.userlist
 });
 
-const Userlist = connect(mapStateToProps)(UserlistComponent);
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: userId => dispatch(setCurrentUser(userId))
+});
+
+const Userlist = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserlistComponent);
 
 export { Userlist };

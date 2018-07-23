@@ -33,6 +33,10 @@ describe("test comment list", () => {
     );
   });
 
+  afterEach(() => {
+    container.unmount();
+  });
+
   it("should have a table element", () => {
     expect(container.find("table").length).toEqual(1);
   });
