@@ -82,28 +82,17 @@ class UserlistComponent extends Component {
 
     const sortByKeys = Object.keys(sortBy);
 
+    const sortHelper = isDesc => (a, b) => {
+      if (isDesc) {
+        return a > b ? 1 : a < b ? -1 : 0;
+      }
+      return a < b ? 1 : a > b ? -1 : 0;
+    };
+
     if (Object.keys(sortBy).length > 0) {
-      console.log(sortBy);
       for (const sortKey of sortByKeys) {
         userlist = userlist.sort((userA, userB) => {
-          // desc
-          if (sortBy[sortKey]) {
-            if (userA[sortKey] > userB[sortKey]) {
-              return 1;
-            }
-            if (userA[sortKey] < userB[sortKey]) {
-              return -1;
-            }
-            return 0;
-          } else {
-            if (userA[sortKey] < userB[sortKey]) {
-              return 1;
-            }
-            if (userA[sortKey] > userB[sortKey]) {
-              return -1;
-            }
-            return 0;
-          }
+          return sortHelper(sortBy[sortKey])(userA[sortKey], userB[sortKey]);
         });
       }
     }
