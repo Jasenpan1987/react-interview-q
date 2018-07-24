@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field } from "../../ui/field";
-import { unSetCurrentUser } from "../../../actions/userFormActions";
+import {
+  unSetCurrentUser,
+  saveOrUpdateCurrentUser
+} from "../../../actions/userFormActions";
 
 class UserFormComponent extends Component {
   defaultState = {
@@ -24,6 +27,7 @@ class UserFormComponent extends Component {
 
       if (currentUser) {
         this.setState({
+          currentUserId: nextCurrentUserId,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
           phoneNumber: currentUser.phoneNumber
@@ -52,6 +56,12 @@ class UserFormComponent extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state);
+    this.props.saveOrUpdateCurrentUser({
+      ...this.state,
+      callback: () => {
+        this.setState({ ...this.defaultState });
+      }
+    });
   };
 
   render() {
@@ -113,7 +123,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  unSetCurrentUser: () => dispatch(unSetCurrentUser())
+  unSetCurrentUser: () => dispatch(unSetCurrentUser()),
+  saveOrUpdateCurrentUser: user => dispatch(saveOrUpdateCurrentUser(user))
 });
 
 export const UserForm = connect(
