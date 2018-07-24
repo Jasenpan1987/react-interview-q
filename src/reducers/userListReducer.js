@@ -46,7 +46,7 @@ export const userListReducer = (state = defaultState, action) => {
           ...state.users,
           [action.payload.id]: action.payload
         },
-        userIds: [state.userIds, action.payload.id],
+        userIds: [...state.userIds, action.payload.id],
         isLoading: false,
         error: null
       };

@@ -5,8 +5,7 @@ const UserDisplayContext = React.createContext();
 class UserDiaplayProvider extends Component {
   state = {
     keywords: "",
-    sortBy: "",
-    sortOrder: ""
+    sortBy: {}
   };
 
   changeKeywords = keywords => {
@@ -15,12 +14,19 @@ class UserDiaplayProvider extends Component {
     });
   };
 
+  updateSort = ({ key, isDesc }) => {
+    this.setState({
+      sortBy: { ...this.state.sortBy, [key]: isDesc }
+    });
+  };
+
   render() {
     return (
       <UserDisplayContext.Provider
         value={{
           ...this.state,
-          changeKeywords: this.changeKeywords
+          changeKeywords: this.changeKeywords,
+          updateSort: this.updateSort
         }}
       >
         {this.props.children}

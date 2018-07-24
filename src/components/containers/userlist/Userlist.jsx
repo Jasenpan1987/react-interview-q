@@ -26,12 +26,34 @@ class UserlistComponent extends Component {
     );
   };
 
-  renderHead = () => {
+  renderHeadLink = (sortBy, updateSort, label, fieldName) => {
+    return (
+      <th>
+        <a
+          className="text-info"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            updateSort({
+              key: fieldName,
+              isDesc: !sortBy[fieldName]
+            });
+          }}
+        >
+          {label}
+          <i
+            className={`fas fa-arrow-${sortBy[fieldName] ? "up" : "down"} ml-1`}
+          />
+        </a>
+      </th>
+    );
+  };
+
+  renderHead = (sortBy, updateSort) => {
     return (
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Phone #</th>
+        {this.renderHeadLink(sortBy, updateSort, "First Name", "firstName")}
+        {this.renderHeadLink(sortBy, updateSort, "Last Name", "lastName")}
+        {this.renderHeadLink(sortBy, updateSort, "Phone #", "phoneNumber")}
         <th>Edit</th>
       </tr>
     );
@@ -39,6 +61,8 @@ class UserlistComponent extends Component {
   render() {
     const {
       keywords, // injected from context
+      sortBy, // injected from context
+      updateSort, // injected from context
       userlist: { users, isLoading, userIds }
     } = this.props;
 
@@ -51,13 +75,42 @@ class UserlistComponent extends Component {
     if (keywords) {
       userlist = userlist.filter(
         ({ firstName, lastName }) =>
-          firstName.includes(keywords) || lastName.includes(keywords)
+          firstName.toLowerCase().includes(keywords.toLowerCase()) ||
+          lastName.toLowerCase().includes(keywords.toLowerCase())
       );
+    }
+
+    const sortByKeys = Object.keys(sortBy);
+
+    if (Object.keys(sortBy).length > 0) {
+      console.log(sortBy);
+      for (const sortKey of sortByKeys) {
+        userlist = userlist.sort((userA, userB) => {
+          // desc
+          if (sortBy[sortKey]) {
+            if (userA[sortKey] > userB[sortKey]) {
+              return 1;
+            }
+            if (userA[sortKey] < userB[sortKey]) {
+              return -1;
+            }
+            return 0;
+          } else {
+            if (userA[sortKey] < userB[sortKey]) {
+              return 1;
+            }
+            if (userA[sortKey] > userB[sortKey]) {
+              return -1;
+            }
+            return 0;
+          }
+        });
+      }
     }
 
     return (
       <table className="table">
-        <thead>{this.renderHead()}</thead>
+        <thead>{this.renderHead(sortBy, updateSort)}</thead>
         <tbody>{userlist.map(user => this.renderUser(user))}</tbody>
       </table>
     );

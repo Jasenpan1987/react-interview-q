@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchBox = ({ keywords, changeKeywords }) => {
   return (
-    <div className="row p-4">
+    <div className="row py-4">
       <div className="col-md-5">
         <input
           type="text"

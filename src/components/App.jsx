@@ -11,16 +11,22 @@ class App extends Component {
       <UserDiaplayProvider>
         <div className="container">
           <h2>Phone Book</h2>
+          <UserForm />
           <UserDisplayConsumer>
             {({ keywords, changeKeywords }) => (
               <SearchBox keywords={keywords} changeKeywords={changeKeywords} />
             )}
           </UserDisplayConsumer>
-          <UserForm />
           <div className="row">
             <div className="col">
               <UserDisplayConsumer>
-                {({ keywords }) => <Userlist keywords={keywords} />}
+                {({ keywords, sortBy, updateSort }) => (
+                  <Userlist
+                    keywords={keywords}
+                    sortBy={sortBy}
+                    updateSort={updateSort}
+                  />
+                )}
               </UserDisplayConsumer>
             </div>
           </div>
