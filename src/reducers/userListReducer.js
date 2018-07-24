@@ -12,7 +12,8 @@ import {
 export const defaultState = {
   users: {},
   isLoading: false,
-  error: null
+  error: null,
+  userIds: []
 };
 
 export const userListReducer = (state = defaultState, action) => {
@@ -32,6 +33,7 @@ export const userListReducer = (state = defaultState, action) => {
         users: {
           ...action.payload
         },
+        userIds: Object.keys(action.payload),
         isLoading: false,
         error: null
       };
@@ -44,6 +46,7 @@ export const userListReducer = (state = defaultState, action) => {
           ...state.users,
           [action.payload.id]: action.payload
         },
+        userIds: [state.userIds, action.payload.id],
         isLoading: false,
         error: null
       };

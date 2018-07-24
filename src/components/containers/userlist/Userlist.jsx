@@ -38,18 +38,27 @@ class UserlistComponent extends Component {
   };
   render() {
     const {
-      userlist: { users, isLoading, error }
+      keywords, // injected from context
+      userlist: { users, isLoading, userIds }
     } = this.props;
 
     if (isLoading) {
       return <h3>Loading...</h3>;
     }
+
+    let userlist = userIds.map(id => users[id]);
+
+    if (keywords) {
+      userlist = userlist.filter(
+        ({ firstName, lastName }) =>
+          firstName.includes(keywords) || lastName.includes(keywords)
+      );
+    }
+
     return (
       <table className="table">
         <thead>{this.renderHead()}</thead>
-        <tbody>
-          {Object.keys(users).map(userId => this.renderUser(users[userId]))}
-        </tbody>
+        <tbody>{userlist.map(user => this.renderUser(user))}</tbody>
       </table>
     );
   }
